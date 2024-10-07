@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacaciones Médicos de Emergencias - Lanús</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .login-container, .form-container, .table-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .login-container {
+            margin-top: 100px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+
+        input[type="text"], input[type="password"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .delete-btn {
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de Inicio de Sesión -->
+    <div class="login-container" id="login-container">
+        <h1>Acceso al Sistema de Emergencias</h1>
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" placeholder="Ingrese su usuario">
+
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" placeholder="Ingrese su contraseña">
+
+        <button onclick="login()">Iniciar Sesión</button>
+    </div>
+
+    <!-- Página Principal (Oculta hasta que se inicie sesión) -->
+    <div class="form-container" id="main-container" style="display: none;">
+        <h2>Agregar Médico</h2>
+        <label for="name">Nombre del Médico:</label>
+        <input type="text" id="name" placeholder="Nombre del médico">
+
+        <label for="start-date">Fecha de Inicio de Vacaciones:</label>
+        <input type="date" id="start-date">
+
+        <label for="end-date">Fecha de Fin de Vacaciones:</label>
+        <input type="date" id="end-date">
+
+        <button onclick="addDoctor()">Agregar Médico</button>
+    </div>
+
+    <div class="table-container" id="table-container" style="display: none;">
+        <h2>Médicos en Vacaciones</h2>
+        <table id="doctor-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se irán agregando los médicos -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Usuario y contraseña predefinidos
+        const validUsername = "SEL";
+        const validPassword = "Lanus123";
+
+        // Función para iniciar sesión
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === validUsername && password === validPassword) {
+                // Ocultar el formulario de inicio de sesión y mostrar la página principal
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('main-container').style.display = 'block';
+                document.getElementById('table-container').style.display = 'block';
+            } else {
+                alert('Usuario o contraseña incorrectos');
+            }
+        }
+
+        // Función para agregar un nuevo médico a la tabla
+        function addDoctor() {
+            const name = document.getElementById('name').value;
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+
+            if (name === '' || startDate === '' || endDate === '') {
+                alert('Por favor completa todos los campos.');
+                return;
+            }
+
+            const table = document.getElementById('doctor-table').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+
+            const nameCell = newRow.insertCell(0);
+            const startDateCell = newRow.insertCell(1);
+            const endDateCell = newRow.insertCell(2);
+            const deleteCell = newRow.insertCell(3);
+
+            nameCell.textContent = name;
+            startDateCell.textContent = startDate;
+            endDateCell.textContent = endDate;
+            deleteCell.innerHTML = '<span class="delete-btn" onclick="deleteDoctor(this)">Eliminar</span>';
+
+            // Limpiar el formulario
+            document.getElementById('name').value = '';
+            document.getElementById('start-date').value = '';
+            document.getElementById('end-date').value = '';
+        }
+
+        // Función para eliminar una fila de la tabla
+        function deleteDoctor(element) {
+            const row = element.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+    </script>
+
+</body>
+</html>
